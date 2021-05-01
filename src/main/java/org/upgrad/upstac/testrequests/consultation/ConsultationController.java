@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.upgrad.upstac.config.security.UserLoggedInService;
 import org.upgrad.upstac.exception.AppException;
+import org.upgrad.upstac.testrequests.RequestStatus;
 import org.upgrad.upstac.testrequests.TestRequest;
 import org.upgrad.upstac.testrequests.TestRequestQueryService;
 import org.upgrad.upstac.testrequests.TestRequestUpdateService;
 import org.upgrad.upstac.testrequests.flow.TestRequestFlowService;
+import org.upgrad.upstac.users.User;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
@@ -59,7 +61,8 @@ public class ConsultationController {
         // For reference check the method getForTests() method from LabRequestController class
 
         // replace this line of code with your implementation
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED,"Not implemented");
+        return testRequestQueryService.findBy(RequestStatus.LAB_TEST_COMPLETED);
+//        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED,"Not implemented");
 //        testRequestQueryService.findBy(HttpStatus.)
 
 
@@ -77,7 +80,9 @@ public class ConsultationController {
         // For reference check the method getForTests() method from LabRequestController class
 
         // replace this line of code with your implementation
-        throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED,"Not implemented");
+        User user = userLoggedInService.getLoggedInUser();
+        return testRequestQueryService.findByDoctor(user);
+
 
 
 
@@ -98,8 +103,9 @@ public class ConsultationController {
         // return the above created object
         // For reference check the method assignForLabTest() method from LabRequestController class
         try {
-            // replace this line of code with your implementation
-            throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED,"Not implemented");
+            User doctor =userLoggedInService.getLoggedInUser();
+            TestRequest testRequest = new TestRequest();
+            return testRequestUpdateService.assignForConsultation(id, doctor);
 
         }catch (AppException e) {
             throw asBadRequest(e.getMessage());
